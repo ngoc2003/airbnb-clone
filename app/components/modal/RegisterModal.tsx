@@ -11,6 +11,7 @@ import Heading from "../heading";
 import TextField from "../textField";
 import { toast } from "react-hot-toast";
 import Button from "../button";
+import { signIn } from "next-auth/react";
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
@@ -52,22 +53,23 @@ const RegisterModal = () => {
         outline
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={() => {
-          console.log("hi");
-        }}
+        onClick={() => signIn("google")}
       />
       <Button
         outline
         label="Continue with Github"
         icon={AiFillGithub}
-        onClick={() => {
-          console.log("hi");
-        }}
+        onClick={() => signIn("github")}
       />
       <div className="text-neutral-500 text-center mt-4 font-light">
         <div className="flex justify-center items-center gap-2">
           <div>Already have an account ?</div>
-          <div onClick={registerModal.onClose} className="text-neutral-800 cursor-pointer hover:underline">Log in</div>
+          <div
+            onClick={registerModal.onClose}
+            className="text-neutral-800 cursor-pointer hover:underline"
+          >
+            Log in
+          </div>
         </div>
       </div>
     </div>

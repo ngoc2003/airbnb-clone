@@ -6,12 +6,20 @@ import Avatar from "./Avatar";
 import MenuItem from "./MenuItem";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 import useLoginModal from "@/app/hooks/useLoginModal";
+import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
+import { SafeUser } from "@/app/types";
 
-const UserMenu = () => {
+interface UserMenuProps {
+  currentUser?: SafeUser | null;
+}
+const UserMenu = ({ currentUser }: UserMenuProps) => {
   const registerModal = useRegisterModal();
   const loginModal = useLoginModal();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const handleToggleOpen = useCallback(() => {
     setIsOpen((prev) => !prev);
@@ -21,7 +29,9 @@ const UserMenu = () => {
     <div className="flex items-center gap-3 relative">
       <div
         className="hidden md:block text-sm font-semibold py-3 px-4 rounded-full hover:bg-neutral-100 transition cursor-pointer"
-        // onClick={() => {}}
+        onClick={() => {
+          router.push("/");
+        }}
       >
         Airbnb your home
       </div>
@@ -31,7 +41,7 @@ const UserMenu = () => {
       >
         <AiOutlineMenu />
         <div className="hidden md:block">
-          <Avatar />
+          <Avatar src={currentUser?.image} />
         </div>
       </div>
 
@@ -39,18 +49,62 @@ const UserMenu = () => {
         <div className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
           <div className="flex flex-col cursor-pointer">
             <>
-              <MenuItem
-                label="Login"
-                onClick={() => {
-                  loginModal.onOpen();
-                }}
-              />
-              <MenuItem
-                label="Register"
-                onClick={() => {
-                  registerModal.onOpen();
-                }}
-              />
+              {currentUser ? (
+                <>
+                  <MenuItem
+                    label="My trips"
+                    onClick={() => {
+                      console.log("ihihi");
+                    }}
+                  />
+                  <MenuItem
+                    label="My favorites"
+                    onClick={() => {
+                      console.log("ihihi");
+                    }}
+                  />
+                  <MenuItem
+                    label="My reservations"
+                    onClick={() => {
+                      console.log("ihihi");
+                    }}
+                  />
+                  <MenuItem
+                    label="My properties"
+                    onClick={() => {
+                      console.log("ihihi");
+                    }}
+                  />
+                  <MenuItem
+                    label="Airbnb my home"
+                    onClick={() => {
+                      console.log("ihihi");
+                    }}
+                  />
+                  <hr />
+                  <MenuItem
+                    label="Log out"
+                    onClick={() => {
+                      signOut();
+                    }}
+                  />
+                </>
+              ) : (
+                <>
+                  <MenuItem
+                    label="Login"
+                    onClick={() => {
+                      loginModal.onOpen();
+                    }}
+                  />
+                  <MenuItem
+                    label="Register"
+                    onClick={() => {
+                      registerModal.onOpen();
+                    }}
+                  />
+                </>
+              )}
             </>
           </div>
         </div>
