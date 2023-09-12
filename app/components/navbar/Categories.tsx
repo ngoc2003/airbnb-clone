@@ -1,0 +1,45 @@
+"use client";
+
+import React from "react";
+import Container from "../container";
+import { usePathname, useSearchParams } from "next/navigation";
+import CategoryBox from "../categoryBox";
+import { getCategoryList } from "@/app/stores/categories";
+
+const Categories = () => {
+  const params = useSearchParams();
+  const category = params?.get("category");
+  const pathname = usePathname();
+  const isMainPage = pathname === "/";
+  const { CATEGORIES } = getCategoryList();
+
+  if (!isMainPage) {
+    return null;
+  }
+
+  return (
+    <Container>
+      <div
+        className="
+            pt-4
+            flex 
+            flex-row 
+            items-center 
+            justify-between
+            overflow-x-auto
+          "
+      >
+        {CATEGORIES.map((item) => (
+          <CategoryBox
+            key={item.label}
+            label={item.label}
+            icon={item.icon}
+            selected={category === item.label}
+          />
+        ))}
+      </div>
+    </Container>
+  );
+};
+
+export default Categories;

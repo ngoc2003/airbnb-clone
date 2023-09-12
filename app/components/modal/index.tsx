@@ -67,7 +67,7 @@ const Modal = ({
               : "translate-y-full opacity-0"
           }`}
         >
-          <div className="translate h-full lg:h-auto md:h-auto border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+          <div className="mx-auto max-h-[95vh] max-w-[800px] overflow-scroll translate h-full lg:h-auto md:h-auto border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
             <div className="flex items-center p-5 rounded-t justify-center relative border-b">
               <button
                 className="p-1 border-0 hover:opacity-70 transition absolute left-9"
