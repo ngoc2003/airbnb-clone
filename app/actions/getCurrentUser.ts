@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import client from "../libs/prismadb";
+import { SafeUser } from "../types";
 
 export const getSession = async () => {
   return await getServerSession(authOptions);
@@ -28,7 +29,7 @@ export default async function getCurrentUser() {
       createdAt: currentUser.createdAt.toISOString(),
       updatedAt: currentUser.updatedAt.toISOString(),
       emailVerified: currentUser.emailVerified?.toISOString() || null,
-    };
+    } as SafeUser;
   } catch (err) {
     return null;
   }

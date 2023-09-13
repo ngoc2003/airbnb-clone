@@ -6,12 +6,15 @@ import useRentModal from "@/app/hooks/useRentModal";
 import Heading from "../heading";
 import { getCategoryList } from "@/app/stores/categories";
 import CategoryInput from "../textField/CategoryInput";
-import { FieldValues, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import TextField from "../textField";
 import CountrySelect from "../textField/CountrySelect";
 import dynamic from "next/dynamic";
 import Counter from "../textField/Counter";
 import ImageUpload from "../textField/ImageUpload";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 enum STEPS {
   CATEGORY = 0,
@@ -21,7 +24,9 @@ enum STEPS {
   DESCRIPTION = 4,
   PRICE = 5,
 }
+
 const RentModal = () => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -96,13 +101,37 @@ const RentModal = () => {
     [location]
   );
 
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    if (step !== STEPS.PRICE) {
+      return handleNextStep();
+    }
+
+    setIsLoading(true);
+
+    axios
+      .post("/api/listings", data)
+      .then(() => {
+        toast.success("Listing created!");
+        router.refresh();
+        reset();
+        setStep(STEPS.CATEGORY);
+        rentModal.onClose();
+      })
+      .catch(() => {
+        toast.error("Something went wrong!");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+
   return (
     <Modal
       isOpen={rentModal.isOpen}
       title="Airbnb your home"
       onClose={rentModal.onClose}
       actionLabel={actionLabel}
-      onSubmit={handleNextStep}
+      onSubmit={handleSubmit(onSubmit)}
       secondaryAction={step === STEPS.CATEGORY ? undefined : handleBackStep}
       secondaryActionLabel={secondaryActionLabel}
     >
@@ -120,6 +149,7 @@ const RentModal = () => {
             <Map center={location?.latlng} />
           </div>
         )}
+
         {step === STEPS.INFO && (
           <div className="flex flex-col gap-8">
             <Heading
@@ -148,6 +178,7 @@ const RentModal = () => {
             />
           </div>
         )}
+
         {step === STEPS.IMAGES && (
           <div className="flex flex-col gap-8">
             <Heading
@@ -160,6 +191,7 @@ const RentModal = () => {
             />
           </div>
         )}
+
         {step === STEPS.DESCRIPTION && (
           <div className="flex flex-col gap-8">
             <Heading
@@ -184,7 +216,8 @@ const RentModal = () => {
               required
             />
           </div>
-        )}{" "}
+        )}
+
         {step === STEPS.PRICE && (
           <div className="flex flex-col gap-8">
             <Heading
@@ -203,6 +236,7 @@ const RentModal = () => {
             />
           </div>
         )}
+
         {step === STEPS.CATEGORY && (
           <div className="flex flex-col gap-8">
             <Heading
