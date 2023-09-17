@@ -3,11 +3,15 @@ import Container from "./components/container";
 import EmptyState from "./components/EmptyState";
 import ListingCard from "./components/listings/ListingCard";
 import getCurrentUser from "./actions/getCurrentUser";
-import getListingList from "./actions/getListingList";
+import getListingList, { IListingParams } from "./actions/getListingList";
 import { SafeListing } from "./types";
 
-export default async function Home() {
-  const listingList = await getListingList();
+interface HomeProps {
+  searchParams: IListingParams;
+}
+
+export default async function Home({ searchParams }: HomeProps) {
+  const listingList = await getListingList(searchParams);
   const currentUser = await getCurrentUser();
 
   if (!listingList?.length) {

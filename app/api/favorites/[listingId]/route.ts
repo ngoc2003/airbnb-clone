@@ -6,7 +6,7 @@ interface IParams {
   listingId?: string;
 }
 
-export async function POST(req: Request, { params }: { params: IParams }) {
+export async function POST(_: Request, { params }: { params: IParams }) {
   const currentUser = await getCurrentUser();
   if (!currentUser) {
     return NextResponse.error();

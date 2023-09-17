@@ -1,9 +1,10 @@
 import { NextResponse } from "next/server";
-import client from "@/app/libs/prismadb";
+
 import getCurrentUser from "@/app/actions/getCurrentUser";
+import client from "@/app/libs/prismadb";
 
 interface IParams {
-  reservationId?: string;
+  listingId?: string;
 }
 
 export async function DELETE(_: Request, { params }: { params: IParams }) {
@@ -13,18 +14,18 @@ export async function DELETE(_: Request, { params }: { params: IParams }) {
     return NextResponse.error();
   }
 
-  const { reservationId } = params;
+  const { listingId } = params;
 
-  if (!reservationId || typeof reservationId !== "string") {
+  if (!listingId || typeof listingId !== "string") {
     throw new Error("Invalid ID");
   }
 
-  const reservation = await client.reservation.deleteMany({
+  const listing = await client.listing.deleteMany({
     where: {
-      id: reservationId,
-      OR: [{ userId: currentUser.id }, { listing: { userId: currentUser.id } }],
+      id: listingId,
+      userId: currentUser.id,
     },
   });
 
-  return NextResponse.json(reservation);
+  return NextResponse.json(listing);
 }

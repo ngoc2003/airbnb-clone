@@ -31,8 +31,6 @@ const ListingCard = ({
 
   const { getByValue } = useCountries();
 
-  const location = getByValue(data.locationValue);
-
   const reservationDate = useMemo(() => {
     if (!reservation) {
       return null;
@@ -43,6 +41,8 @@ const ListingCard = ({
 
     return `${format(start, "PP")} - ${format(end, "PP")}`;
   }, [reservation]);
+
+  const location = getByValue(data.locationValue);
 
   const price = useMemo(() => {
     if (reservation) {
