@@ -13,6 +13,7 @@ interface TextFieldProps {
   required?: boolean;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
+  hasValue: boolean;
 }
 
 const TextField = ({
@@ -24,6 +25,7 @@ const TextField = ({
   register,
   required,
   errors,
+  hasValue,
 }: TextFieldProps) => {
   return (
     <div className="w-full relative">
@@ -77,6 +79,11 @@ const TextField = ({
           peer-placeholder-shown:translate-y-0 
           peer-focus:scale-75
           peer-focus:-translate-y-4
+          ${
+            hasValue
+              ? "scale-75 -translate-y-4"
+              : `peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4`
+          }
           ${errors[id] ? "text-rose-500" : "text-zinc-400"}
         `}
       >

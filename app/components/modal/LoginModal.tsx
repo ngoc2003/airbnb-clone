@@ -23,6 +23,7 @@ const LoginModal = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
@@ -104,6 +105,7 @@ const LoginModal = () => {
           register={register}
           errors={errors}
           required
+          hasValue={watch("email")}
         />
         <TextField
           id="password"
@@ -113,6 +115,7 @@ const LoginModal = () => {
           register={register}
           errors={errors}
           required
+          hasValue={watch("password")}
         />
       </div>
     </Modal>

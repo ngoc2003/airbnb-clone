@@ -206,6 +206,7 @@ const RentModal = () => {
               register={register}
               errors={errors}
               required
+              hasValue={watch("title")}
             />
             <hr />
             <TextField
@@ -215,6 +216,7 @@ const RentModal = () => {
               register={register}
               errors={errors}
               required
+              hasValue={watch("description")}
             />
           </div>
         )}
@@ -234,6 +236,7 @@ const RentModal = () => {
               register={register}
               errors={errors}
               required
+              hasValue={watch("price")}
             />
           </div>
         )}

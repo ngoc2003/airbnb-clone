@@ -9,10 +9,14 @@ import { SafeUser } from "./types";
 import RentModal from "./components/modal/RentModal";
 import SearchModal from "./components/modal/SearchModal";
 import Client from "./components/client/Client";
+import Head from "next/head";
 
 export const metadata = {
   title: "Airbnb",
   description: "Airbnb website cloned by Bui Ngoc",
+  icons: {
+    icon: "/icon.png",
+  },
 };
 
 const font = Nunito({
@@ -28,6 +32,11 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
+      <Head>
+        <link rel="icon" href="/images/logo.png" sizes="any" />
+        <link rel="apple-touch-icon" href="/images/logo.png" sizes="any" />
+        <link rel="image_src" href="/images/logo.png" sizes="any" />
+      </Head>
       <body className={font.className}>
         <Client>
           <ToasterProvider />

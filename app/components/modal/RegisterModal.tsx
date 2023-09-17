@@ -22,7 +22,7 @@ const RegisterModal = () => {
   const {
     register,
     handleSubmit,
-    unregister,
+    watch,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
@@ -38,9 +38,9 @@ const RegisterModal = () => {
     axios
       .post("/api/register", data)
       .then(() => {
-        toast.success("Register success!")
+        toast.success("Register success!");
         registerModal.onClose();
-        loginModal.onOpen(); 
+        loginModal.onOpen();
       })
       .catch((error) => {
         toast.error(error?.response?.statusText || "Something went wrong");
@@ -103,6 +103,7 @@ const RegisterModal = () => {
           register={register}
           errors={errors}
           required
+          hasValue={watch("email")}
         />
         <TextField
           id="name"
@@ -111,6 +112,7 @@ const RegisterModal = () => {
           register={register}
           errors={errors}
           required
+          hasValue={watch("name")}
         />
         <TextField
           id="password"
@@ -120,6 +122,7 @@ const RegisterModal = () => {
           register={register}
           errors={errors}
           required
+          hasValue={watch("password")}
         />
       </div>
     </Modal>
