@@ -42,6 +42,7 @@ const SearchModal = () => {
       dynamic(() => import("../map"), {
         ssr: false,
       }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [location]
   );
 
