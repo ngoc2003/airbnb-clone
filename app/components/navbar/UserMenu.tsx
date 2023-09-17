@@ -10,11 +10,13 @@ import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { SafeUser } from "@/app/types";
 import useRentModal from "@/app/hooks/useRentModal";
+import { useClickAway } from "@/app/hooks/useClickAway";
 
 interface UserMenuProps {
   currentUser?: SafeUser | null;
 }
 const UserMenu = ({ currentUser }: UserMenuProps) => {
+  const userMenuRef = useClickAway(() => setIsOpen(false));
   const rentModal = useRentModal();
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
@@ -54,7 +56,10 @@ const UserMenu = ({ currentUser }: UserMenuProps) => {
       </div>
 
       {isOpen && (
-        <div className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm">
+        <div
+          className="absolute rounded-xl shadow-md w-[40vw] md:w-3/4 bg-white overflow-hidden right-0 top-12 text-sm"
+          ref={userMenuRef}
+        >
           <div className="flex flex-col cursor-pointer">
             <>
               {currentUser ? (
