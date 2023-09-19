@@ -1,34 +1,120 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AIRBNB - CLONE
+
+---
+
+## Quick Links
+
+[Demo](#demo)
+
+- [Live Site Demo](#live-site-demo)
+<!-- - [Video Demo](#video-demo) -->
+
+[Tech Stack](#tech-stack)
+
+[Implementation Hightlights](#implementation-highlights)
+
+- [User Stories](#user-stories)
+- [Current Plans for Expansion](#current-plans-for-expansion)
+- [Future Plans for Expansion](#future-plans-for-expansion)
+
+[Getting Started](#getting-started)
+
+- [Prerequisites](#prerequisites)
+
+  - [Tools & Versions](#tools-&-versions)
+
+- [Serving Application](#serving-application)
+
+  - [Web Client](#web-client)
+
+[Deployment](#deployment)
+
+[Author](#author)
+
+---
+
+## Demo
+
+### Live Site Demo
+
+Demo: [Link](https://chat-via-web.vercel.app/)
+
+---
+
+## Tech Stack
+
+- NextJS - Prisma - TailwindCSS - Typescript
+
+- MongoDB - Next Auth
+
+---
+
+## Implementation Highlights
+
+- `Front-end Technologies`: React, TypeScript, and Next.js were used to develop the web client, ensuring a robust and efficient user interface.
+- `State Management`: Zustand
+- `Database`: MongoDB was used as the persisted database, providing a secure and reliable storage solution for managing user data.
+- `Commit Conventions`: Commitlint and Husky were utilized to enforce commit message conventions and pre-commit hooks, promoting code quality and maintainability.
+- `Code Analysis`: SonarCloud was integrated for static code analysis and code quality checks, allowing continuous monitoring and improvement of code quality. It helps identify code smells, bugs, vulnerabilities, and maintain a high level of code quality.
+- `Documentation`: The codebase was documented with clear and concise comments, enhancing code readability and facilitating future maintenance and updates.
+
+---
+
+## User Stories
+
+- Update later
+
+---
+
+### Current Plans for Expansion
+
+- Containerize services and database with Docker
+
+### Future Plans for Expansion
+
+- Docker
+- Pagination
+- Voting system
+- Apply next i18n
+- Upload multiple images
+- Intergrate rich text editor
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
+**!important** .env file is required for setting up environment variables for this project  
+ an example of .env file is located at root directory
+
+#### Tools & Versions
+
+| Tools  | Versions |
+| ------ | -------- |
+| yarn   | 1.22.19  |
+
+#### Web Client
+
+- install dependencies & start application
+
+```terminal
+yarn install
 yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Application will be serving on http://localhost:3000
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Deployment
 
-## Learn More
+- Not setup yet
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Author
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- [Bui Ngoc](https://www.facebook.com/Bui.Ngoc.1302/)
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+---
