@@ -15,11 +15,6 @@ body,
   z-index: 0 !important;
 }
 
-.leaflet-pane,
-.leaflet-pane * {
-  height: 100% !important;
-}
-
 .rdrMonth {
   width: 100% !important;
 }

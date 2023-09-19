@@ -1,18 +1,31 @@
+import { State } from "country-state-city";
 import countries from "world-countries";
 
-const formattedCountries = countries.map((country) => ({
-  value: country.cca2,
-  label: country.name.common,
-  flag: country.flag,
-  latlng: country.latlng,
-  region: country.region,
-}));
+const formattedCountries = countries.flatMap((country) => {
+  const states = State.getStatesOfCountry(country.cca2);
+
+  return states.map((state) => ({
+    label: `${state.name}, ${country.name.common}`,
+    value: `${state.name}-${country.name.common}`,
+    flag: country.flag,
+    latlng:
+      state?.latitude && state?.longitude
+        ? [+state.latitude, +state.longitude]
+        : country.latlng,
+    region: country.region,
+  }));
+});
 
 export const useCountries = () => {
-  const getAll = () => formattedCountries;
-  const getByValue = (value: string) => {
-    return formattedCountries.find((item) => item.value === value);
-  };
+  const cities = formattedCountries;
 
-  return { getAll, getByValue };
+  const getAll = () => cities;
+
+  const getByValue = (value: string) =>
+    cities.find((item) => item.value === value);
+
+  return {
+    getAll,
+    getByValue,
+  };
 };

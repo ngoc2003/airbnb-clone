@@ -19,9 +19,11 @@ interface CountrySelectProps {
 
 const CountrySelect = ({ value, onChange }: CountrySelectProps) => {
   const { getAll } = useCountries();
+
   return (
     <div>
       <Select
+        openMenuOnClick={false}
         placeholder="Anywhere"
         isClearable
         options={getAll()}
