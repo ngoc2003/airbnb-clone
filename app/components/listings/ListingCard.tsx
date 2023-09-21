@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import Image from "next/image";
 import HeartButton from "../button/HeartButton";
 import Button from "../button";
+import { AiFillStar } from "react-icons/ai";
 
 interface ListingCardProps {
   data: SafeListing;
@@ -30,6 +31,7 @@ const ListingCard = ({
   const router = useRouter();
 
   const { getByValue } = useCountries();
+  console.log(data);
 
   const reservationDate = useMemo(() => {
     if (!reservation) {
@@ -66,9 +68,9 @@ const ListingCard = ({
   return (
     <div
       onClick={() => router.push(`/listings/${data.id}`)}
-      className="col-span-1 cursor-pointer group"
+      className="col-span-1 cursor-pointer group text-sm"
     >
-      <div className="flex flex-col gap-2 w-full ">
+      <div className="flex flex-col gap-1 w-full ">
         <div className="aspect-square w-full relative overflow-hidden rounded-xl">
           <Image
             fill
@@ -81,8 +83,14 @@ const ListingCard = ({
           </div>
         </div>
 
-        <div className="font-semibold text-lg">
-          {location?.region}, {location?.label}
+        <div className="flex items-center justify-between mt-2 gap-2">
+          <div className="font-semibold">
+            {location?.region}, {location?.label}
+          </div>
+          <div className="flex items-center">
+            <AiFillStar />
+            <span className="ml-0.5">5</span>
+          </div>
         </div>
 
         <div className="font-light text-neutral-500">

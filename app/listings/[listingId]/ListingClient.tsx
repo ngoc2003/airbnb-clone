@@ -6,18 +6,23 @@ import ListingInfo from "@/app/components/listings/ListingInfo";
 import useLoginModal from "@/app/hooks/useLoginModal";
 import { getCategoryList } from "@/app/stores/categories";
 import { SafeListing, SafeUser } from "@/app/types";
-import { Reservation } from "@prisma/client";
+import { Reservation, Review, User } from "@prisma/client";
 import { differenceInCalendarDays, eachDayOfInterval } from "date-fns";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import ListingReservation from "@/app/components/listings/ListingReservation";
+import ListingReview from "@/app/components/listings/ListingReview";
+import ListingWriteReview from "@/app/components/listings/ListingWriteReview";
 
 interface ListingClientProps {
   reservations?: Reservation[];
   listing: SafeListing & {
     user: SafeUser;
+    reviews: (Review & {
+      user: User;
+    })[];
   };
   currentUser?: SafeUser | null;
 }
@@ -144,6 +149,11 @@ const ListingClient = ({
               />
             </div>
           </div>
+        </div>
+        <hr className="my-10 md:my-14" />
+        <div className="flex flex-col-reverse md:flex-row  gap-6">
+          <ListingReview reviews={listing?.reviews} />
+          <ListingWriteReview userId={currentUser?.id} listingId={listing.id} />
         </div>
       </div>
     </Container>

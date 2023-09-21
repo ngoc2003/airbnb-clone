@@ -14,6 +14,11 @@ export default async function getListingById(params: IParams) {
       },
       include: {
         user: true,
+        reviews: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 

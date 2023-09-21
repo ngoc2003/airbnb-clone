@@ -1,4 +1,3 @@
-import { NextResponse } from "next/server";
 import client from "../libs/prismadb";
 
 interface IParams {
