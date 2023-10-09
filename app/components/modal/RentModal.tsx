@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import Modal from ".";
 import useRentModal from "@/app/hooks/useRentModal";
 import Heading from "../heading";
@@ -15,6 +15,7 @@ import ImageUpload from "../textField/ImageUpload";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import CustomEditor from "../editor";
 
 enum STEPS {
   CATEGORY = 0,
@@ -126,6 +127,13 @@ const RentModal = () => {
       });
   };
 
+  const handleSetDescription = useCallback(
+    (val: string) => {
+      setValue("description", val);
+    },
+    [setValue]
+  );
+
   return (
     <Modal
       isOpen={rentModal.isOpen}
@@ -209,15 +217,7 @@ const RentModal = () => {
               hasValue={watch("title")}
             />
             <hr />
-            <TextField
-              id="description"
-              label="Description"
-              disabled={isLoading}
-              register={register}
-              errors={errors}
-              required
-              hasValue={watch("description")}
-            />
+            <CustomEditor handleSetDescription={handleSetDescription} />
           </div>
         )}
 

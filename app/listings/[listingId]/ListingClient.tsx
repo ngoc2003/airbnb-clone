@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 import ListingReview from "@/app/components/listings/ListingReview";
 import ListingWriteReview from "@/app/components/listings/ListingWriteReview";
+import parser from "html-react-parser";
 
 interface ListingClientProps {
   reservations?: Reservation[];
@@ -130,7 +131,7 @@ const ListingClient = ({
             <ListingInfo
               user={listing.user}
               category={category}
-              description={listing.description}
+              description={parser(listing.description) + ""}
               roomCount={listing.roomCount}
               guestCount={listing.guestCount}
               bathroomCount={listing.bathroomCount}
