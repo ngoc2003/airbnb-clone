@@ -1,6 +1,25 @@
 import { NextResponse } from "next/server";
 import client from "@/app/libs/prismadb";
 import getCurrentUser from "@/app/actions/getCurrentUser";
+import getListingList from "@/app/actions/getListingList";
+
+function parseURL(url: string) {
+  const queryString = url.split("?")[1];
+  if (!queryString) {
+    return {};
+  }
+
+  return queryString.split("&").reduce((params: any, param) => {
+    const [key, value] = param.split("=");
+    params[key] = decodeURIComponent(value.replace(/\+/g, " "));
+    return params;
+  }, {});
+}
+
+export async function GET(req: Request) {
+  const data = await getListingList(parseURL(req.url));
+  return NextResponse.json(data);
+}
 
 export async function POST(req: Request) {
   const currentUser = await getCurrentUser();

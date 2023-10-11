@@ -14,22 +14,12 @@ const PropertiesPage = async () => {
 
   const params = { userId: currentUser.id };
 
-  const listingList = await getListingList(params);
-
-  if (listingList.length === 0) {
-    return (
-      <Client>
-        <EmptyState
-          title="No properties found"
-          subtitle="Look like you have no properties!"
-        />
-      </Client>
-    );
-  }
-
   return (
     <Client>
-      <PropertiesClient listingList={listingList} currentUser={currentUser} />
+      <PropertiesClient
+        params={params}
+        currentUser={currentUser}
+      />
     </Client>
   );
 };

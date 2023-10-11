@@ -32,20 +32,13 @@ const ListingHead = ({
         title={title}
         subtitle={`${location?.region}, ${location?.label}`}
       />
-      <div
-        className="
-          w-full
-          h-[60vh]
-          overflow-hidden 
-          rounded-xl
-          relative
-        "
-      >
+      <div className=" w-full h-[60vh] overflow-hidden  rounded-xl relative">
         <Image
           src={imageSrc}
           fill
           className="object-cover w-full"
           alt="Image"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
         <div
           className="

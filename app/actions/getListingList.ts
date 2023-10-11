@@ -9,6 +9,9 @@ export interface IListingParams {
   endDate?: string;
   locationValue?: string;
   category?: string;
+
+  offset?: number;
+  limit?: number;
 }
 
 export default async function getListingList(params: IListingParams) {
@@ -22,6 +25,8 @@ export default async function getListingList(params: IListingParams) {
       startDate,
       endDate,
       category,
+      offset = 0,
+      limit = 20,
     } = params;
 
     let query: any = {};
@@ -80,6 +85,8 @@ export default async function getListingList(params: IListingParams) {
       orderBy: {
         createdAt: "desc",
       },
+      skip: +offset,
+      take: +limit,
     });
 
     return listingList.map((listing) => ({

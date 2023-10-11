@@ -131,7 +131,7 @@ const ListingClient = ({
             <ListingInfo
               user={listing.user}
               category={category}
-              description={parser(listing.description) + ""}
+              description={parser(listing.description)}
               roomCount={listing.roomCount}
               guestCount={listing.guestCount}
               bathroomCount={listing.bathroomCount}

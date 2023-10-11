@@ -2,7 +2,7 @@
 
 import { useCountries } from "@/app/hooks/useCountries";
 import { SafeUser } from "@/app/types";
-import React from "react";
+import React, { ReactNode } from "react";
 import { IconType } from "react-icons";
 import Avatar from "../navbar/Avatar";
 import ListingCategory from "./ListingCategory";
@@ -14,7 +14,7 @@ const Map = dynamic(() => import("../map"), {
 
 interface ListingInfoProps {
   user: SafeUser;
-  description: string;
+  description: string | ReactNode;
   guestCount: number;
   roomCount: number;
   bathroomCount: number;
@@ -63,7 +63,9 @@ const ListingInfo = ({
         />
       )}
       <hr />
-      <div className="md:text-lg font-light text-neutral-500">{description}</div>
+      <div className="md:text-lg font-light text-neutral-500">
+        {description}
+      </div>
       <hr />
       <Map center={coordinates} />
     </div>
