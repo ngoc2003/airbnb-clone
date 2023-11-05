@@ -5,12 +5,11 @@ import { SafeListing, SafeUser } from "../types";
 import Heading from "../components/heading";
 import ListingCard from "../components/listings/ListingCard";
 import Container from "../components/container";
-import { useRouter } from "next/navigation";
-import axios from "axios";
-import toast from "react-hot-toast";
 import Client from "../components/client/Client";
 import EmptyState from "../components/EmptyState";
 import { useInfinityScroll } from "../hooks/useInfinityScroll";
+import { useDeleteListing, useGetListings } from "../utils/listings";
+import Loader from "../components/loading";
 
 interface PropertiesClientProps {
   currentUser?: SafeUser | null;
@@ -20,64 +19,46 @@ interface PropertiesClientProps {
 }
 
 const PropertiesClient = ({ currentUser, params }: PropertiesClientProps) => {
-  const router = useRouter();
   const [deletingId, setDeletingId] = useState<string>("");
   const [offset, setOffset] = useState(0);
-  const [canScroll, setCanScroll] = useState(true);
+  const [canScroll, setCanScroll] = useState(false);
   const [listingList, setListingList] = useState<SafeListing[]>([]);
 
-  const { scrollRef, isFetching } = useInfinityScroll(canScroll);
+  const { scrollRef, isFetching: isInfinityScrollFetching } =
+    useInfinityScroll(canScroll);
+
+  const handleConcatData = (data: SafeListing[]) => {
+    if (data.length < 20) {
+      setCanScroll(false);
+    }
+    setListingList((prev) => prev.concat(data));
+    setOffset((prev) => prev + 20);
+  };
+  const { mutate } = useDeleteListing();
+  const { refetch, isFetching } = useGetListings(
+    {
+      ...params,
+      offset: offset,
+    },
+    handleConcatData
+  );
 
   const onCancel = useCallback(
     (id: string) => {
       setDeletingId(id);
-
-      axios
-        .delete(`/api/listings/${id}`)
-        .then(() => {
-          toast.success("Listing deleted");
-          router.refresh();
-        })
-        .catch((error) => {
-          toast.error(error?.response?.data?.error);
-        })
-        .finally(() => {
-          setDeletingId("");
-        });
+      mutate(id);
     },
-    [router]
+    [mutate]
   );
 
-  const handleFetchListingList = useCallback(() => {
-    axios
-      .get("/api/listings", {
-        params: {
-          ...params,
-          offset: offset,
-        },
-      })
-      .then((data) => {
-        if (data.data.length < 20) {
-          setCanScroll(false);
-        }
-
-        setListingList((prev) => [...prev, ...data.data]);
-      });
-  }, [offset, params]);
-
   useEffect(() => {
-    if (canScroll && !isFetching) {
-      handleFetchListingList();
+    if (isInfinityScrollFetching && canScroll) {
+      refetch();
     }
-  }, [canScroll, handleFetchListingList, isFetching]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canScroll, isInfinityScrollFetching]);
 
-  useEffect(() => {
-    if (isFetching && canScroll) {
-      setOffset((prev) => prev + 20);
-    }
-  }, [canScroll, isFetching]);
-
-  if (listingList.length === 0) {
+  if (listingList.length === 0 && !isFetching) {
     return (
       <Client>
         <EmptyState
@@ -99,18 +80,20 @@ const PropertiesClient = ({ currentUser, params }: PropertiesClientProps) => {
         }}
         className="mt-10 grid  grid-cols-1  sm:grid-cols-2  md:grid-cols-3  lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8"
       >
-        {listingList.map((item: any) => (
-          <ListingCard
-            key={item.id}
-            data={item}
-            actionId={item.id}
-            onAction={onCancel}
-            disabled={deletingId === item.id}
-            actionLabel="Delete property"
-            currentUser={currentUser}
-          />
-        ))}
+        {listingList &&
+          listingList.map((item: any) => (
+            <ListingCard
+              key={item.id}
+              data={item}
+              actionId={item.id}
+              onAction={onCancel}
+              disabled={deletingId === item.id}
+              actionLabel="Delete property"
+              currentUser={currentUser}
+            />
+          ))}
       </div>
+      {isFetching && <Loader />}
     </Container>
   );
 };

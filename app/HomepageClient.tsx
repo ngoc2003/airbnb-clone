@@ -1,11 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
-
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import React, { useEffect, useState } from "react";
 import { IListingParams } from "./actions/getListingList";
 import { useInfinityScroll } from "./hooks/useInfinityScroll";
 import Client from "./components/client/Client";
@@ -13,8 +8,8 @@ import EmptyState from "./components/EmptyState";
 import Container from "./components/container";
 import ListingCard from "./components/listings/ListingCard";
 import { SafeListing, SafeUser } from "./types";
-import axios from "axios";
 import Loader from "./components/loading";
+import { useGetListings } from "./utils/listings";
 
 const HomepageClient = ({
   searchParams,
@@ -24,46 +19,40 @@ const HomepageClient = ({
   currentUser?: SafeUser | null;
 }) => {
   const [offset, setOffset] = useState(0);
-  const [canScroll, setCanScroll] = useState(true);
+  const [canScroll, setCanScroll] = useState(false);
+  const { scrollRef, isFetching: isInfinityScrollFetching } =
+    useInfinityScroll(canScroll);
   const [listingList, setListingList] = useState<SafeListing[]>([]);
-  const { scrollRef, isFetching } = useInfinityScroll(canScroll);
 
-  const handleFetchListingList = useCallback(() => {
-    axios
-      .get("/api/listings", {
-        params: {
-          ...searchParams,
-          offset: offset,
-        },
-      })
-      .then((data) => {
-        if (data.data.length < 20) {
-          setCanScroll(false);
-        }
-
-        setListingList((prev) => [...prev, ...data.data]);
-      });
-  }, [offset, searchParams]);
-
-  useEffect(() => {
-    if (canScroll && !isFetching) {
-      handleFetchListingList();
-    }
-  }, [canScroll, handleFetchListingList, isFetching]);
-
-  useLayoutEffect(() => {
-    setOffset(0);
-    setListingList([]);
-    setCanScroll(true);
-  }, [searchParams]);
-
-  useEffect(() => {
-    if (isFetching && canScroll) {
+  const handleConcatData = (data: SafeListing[]) => {
+    if (data.length < 20) {
+      setCanScroll(false);
+    } else {
+      setCanScroll(true);
       setOffset((prev) => prev + 20);
     }
-  }, [canScroll, isFetching]);
+    setListingList((prev) => prev.concat(data));
+  };
 
-  if (!listingList?.length && !isFetching) {
+  useEffect(() => {
+    setCanScroll(false);
+    setListingList([]);
+    setOffset(0);
+    refetch();
+  }, [searchParams?.category]);
+
+  const { refetch, isFetching } = useGetListings(
+    { ...searchParams, offset: offset },
+    handleConcatData
+  );
+
+  useEffect(() => {
+    if (isInfinityScrollFetching && canScroll) {
+      refetch();
+    }
+  }, [canScroll, isInfinityScrollFetching]);
+
+  if (!listingList?.length && !isInfinityScrollFetching && !isFetching) {
     return (
       <Client>
         <EmptyState showReset />
@@ -86,7 +75,7 @@ const HomepageClient = ({
             <ListingCard key={item.id} data={item} currentUser={currentUser} />
           ))}
         </div>
-        {isFetching && canScroll && <Loader />}
+        {isFetching && <Loader />}
       </Container>
     </Client>
   );

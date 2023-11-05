@@ -10,7 +10,7 @@ export const useInfinityScroll = (canScroll: boolean) => {
         canScroll &&
         scrollRef.current &&
         window.innerHeight + window.scrollY >=
-          scrollRef.current.offsetTop + scrollRef.current.offsetHeight &&
+          scrollRef.current.offsetTop + scrollRef.current.offsetHeight - 50 &&
         !isFetching
       ) {
         setIsFetching(true);

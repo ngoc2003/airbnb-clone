@@ -10,12 +10,11 @@ import { Reservation, Review, User } from "@prisma/client";
 import { differenceInCalendarDays, eachDayOfInterval } from "date-fns";
 import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import axios from "axios";
-import toast from "react-hot-toast";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 import ListingReview from "@/app/components/listings/ListingReview";
 import ListingWriteReview from "@/app/components/listings/ListingWriteReview";
 import parser from "html-react-parser";
+import { useCreateReservation } from "@/app/utils/reservation";
 
 interface ListingClientProps {
   reservations?: Reservation[];
@@ -42,43 +41,33 @@ const ListingClient = ({
   const router = useRouter();
   const loginModal = useLoginModal();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(listing.price);
   const [dateRange, setDateRange] = useState(initialRange);
+
+  const { mutate, isLoading } = useCreateReservation(() => {
+    setDateRange(initialRange);
+
+    router.push("/trips");
+  });
 
   const onCreateReservation = useCallback(() => {
     if (!currentUser) {
       return loginModal.onOpen();
     }
 
-    setIsLoading(true);
-
-    axios
-      .post("/api/reservations", {
-        totalPrice,
-        startDate: dateRange.startDate,
-        endDate: dateRange.endDate,
-        listingId: listing?.id,
-      })
-      .then(() => {
-        toast.success("Listing reserved!");
-        setDateRange(initialRange);
-
-        router.push("/trips");
-      })
-      .catch(() => {
-        toast.error("Somethings went wrong");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    mutate({
+      totalPrice,
+      startDate: dateRange.startDate,
+      endDate: dateRange.endDate,
+      listingId: listing?.id,
+    });
   }, [
     currentUser,
     dateRange.endDate,
     dateRange.startDate,
     listing?.id,
     loginModal,
-    router,
+    mutate,
     totalPrice,
   ]);
 

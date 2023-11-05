@@ -3,12 +3,12 @@
 import React, { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import StarRating from "../rating";
-import axios from "axios";
 import toast from "react-hot-toast";
 import router from "next/router";
 import TextField from "../textField";
 import Button from "../button";
 import useRentModal from "@/app/hooks/useRentModal";
+import { useCreateReview } from "@/app/utils/review";
 
 const EXAMPLE_REVIEW = [
   "Good!",
@@ -38,6 +38,7 @@ const ListingWriteReview = ({ userId, listingId }: ListingWriteReviewProps) => {
       rate: "",
     },
   });
+
   const rating = watch("rate");
 
   const content = watch("content");
@@ -46,25 +47,24 @@ const ListingWriteReview = ({ userId, listingId }: ListingWriteReviewProps) => {
     setValue("content", (" " + content + (content ? ", " : "") + text).trim());
   };
 
+  const { mutate } = useCreateReview(() => {
+    reset();
+    router.reload();
+  });
+
   const onSubmit: SubmitHandler<FieldValues> = (values) => {
     if (!userId || !listingId) {
       toast.error("You need to sign in first!");
       return loginModal.onOpen();
     }
 
-    axios
-      .post("/api/reviews", { ...values, listingId })
-      .then(() => {
-        toast.success("Your review have posted!");
-        reset();
-        router.reload();
-      })
-      .catch(() => {
-        toast.error("Somethings went wrong");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    if (!rating || !content) {
+      return toast.error(
+        "You must fill all content and star to post a review!"
+      );
+    }
+
+    mutate({ ...values, listingId });
   };
 
   return (

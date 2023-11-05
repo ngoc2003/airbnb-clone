@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
-import axios from "axios";
+import React, { useCallback } from "react";
 import { AiFillGithub } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
@@ -9,15 +8,19 @@ import useRegisterModal from "@/app/hooks/useRegisterModal";
 import Modal from ".";
 import Heading from "../heading";
 import TextField from "../textField";
-import { toast } from "react-hot-toast";
 import Button from "../button";
 import { signIn } from "next-auth/react";
 import useLoginModal from "@/app/hooks/useLoginModal";
+import { useRegister } from "@/app/utils/auth";
 
 const RegisterModal = () => {
   const loginModal = useLoginModal();
   const registerModal = useRegisterModal();
-  const [isLoading, setIsLoading] = useState(false);
+
+  const { mutate, isLoading } = useRegister(() => {
+    registerModal.onClose();
+    loginModal.onOpen();
+  });
 
   const {
     register,
@@ -33,21 +36,7 @@ const RegisterModal = () => {
   });
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    setIsLoading(true);
-
-    axios
-      .post("/api/register", data)
-      .then(() => {
-        toast.success("Register success!");
-        registerModal.onClose();
-        loginModal.onOpen();
-      })
-      .catch((error) => {
-        toast.error(error?.response?.statusText || "Something went wrong");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    mutate(data);
   };
 
   const onToggle = useCallback(() => {

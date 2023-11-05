@@ -10,6 +10,7 @@ import RentModal from "./components/modal/RentModal";
 import SearchModal from "./components/modal/SearchModal";
 import Client from "./components/client/Client";
 import Head from "next/head";
+import Providers from "./components/providers";
 
 export const metadata = {
   title: "Airbnb",
@@ -38,15 +39,17 @@ export default async function RootLayout({
         <link rel="image_src" href="/images/logo.png" sizes="any" />
       </Head>
       <body className={font.className}>
-        <Client>
-          <ToasterProvider />
-          <RegisterModal />
-          <SearchModal />
-          <LoginModal />
-          <RentModal />
-          <Navbar currentUser={currentUser} />
-          <div className="pb-20 pt-28">{children}</div>
-        </Client>
+        <Providers>
+          <Client>
+            <ToasterProvider />
+            <RegisterModal />
+            <SearchModal />
+            <LoginModal />
+            <RentModal />
+            <Navbar currentUser={currentUser} />
+            <div className="pb-20 pt-28">{children}</div>
+          </Client>
+        </Providers>
       </body>
     </html>
   );

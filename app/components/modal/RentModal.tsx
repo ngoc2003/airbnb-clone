@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import Modal from ".";
 import useRentModal from "@/app/hooks/useRentModal";
 import Heading from "../heading";
@@ -16,6 +16,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import CustomEditor from "../editor";
+import { useCreateListing } from "@/app/utils/listings";
 
 enum STEPS {
   CATEGORY = 0,
@@ -28,7 +29,26 @@ enum STEPS {
 
 const RentModal = () => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [step, setStep] = useState(STEPS.CATEGORY);
+
+  const rentModal = useRentModal();
+  const { CATEGORIES } = getCategoryList();
+
+  const actionLabel = useMemo(() => {
+    if (step === STEPS.PRICE) {
+      return "Create";
+    }
+
+    return "Next";
+  }, [step]);
+
+  const secondaryActionLabel = useMemo(() => {
+    if (step === STEPS.CATEGORY) {
+      return "";
+    }
+    return "Back";
+  }, [step]);
 
   const {
     register,
@@ -37,6 +57,7 @@ const RentModal = () => {
     watch,
     formState: { errors },
     reset,
+    getValues,
   } = useForm<FieldValues>({
     defaultValues: {
       category: "",
@@ -58,26 +79,6 @@ const RentModal = () => {
   const bathroomCount = watch("bathroomCount");
   const imageSrc = watch("imageSrc");
 
-  const rentModal = useRentModal();
-  const { CATEGORIES } = getCategoryList();
-
-  const [step, setStep] = useState(STEPS.CATEGORY);
-
-  const actionLabel = useMemo(() => {
-    if (step === STEPS.PRICE) {
-      return "Create";
-    }
-
-    return "Next";
-  }, [step]);
-
-  const secondaryActionLabel = useMemo(() => {
-    if (step === STEPS.CATEGORY) {
-      return "";
-    }
-    return "Back";
-  }, [step]);
-
   const setCustomValue = (id: string, value: any) => {
     setValue(id, value, {
       shouldDirty: true,
@@ -91,6 +92,16 @@ const RentModal = () => {
   };
 
   const handleNextStep = () => {
+    if (
+      (step === STEPS.CATEGORY && !category) ||
+      (step === STEPS.LOCATION && !location) ||
+      (step === STEPS.IMAGES && !imageSrc) ||
+      (step === STEPS.DESCRIPTION &&
+        (!getValues("title") || !getValues("description")))
+    ) {
+      return setIsError(true);
+    }
+    setIsError(false);
     setStep((prev) => prev + 1);
   };
 
@@ -103,28 +114,19 @@ const RentModal = () => {
     [location]
   );
 
+  const { mutate, isLoading } = useCreateListing(() => {
+    router.refresh();
+    reset();
+    setStep(STEPS.CATEGORY);
+    rentModal.onClose();
+  });
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     if (step !== STEPS.PRICE) {
       return handleNextStep();
     }
 
-    setIsLoading(true);
-
-    axios
-      .post("/api/listings", data)
-      .then(() => {
-        toast.success("Listing created!");
-        router.refresh();
-        reset();
-        setStep(STEPS.CATEGORY);
-        rentModal.onClose();
-      })
-      .catch(() => {
-        toast.error("Something went wrong!");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    mutate(data);
   };
 
   const handleSetDescription = useCallback(
@@ -133,6 +135,12 @@ const RentModal = () => {
     },
     [setValue]
   );
+
+  useEffect(() => {
+    if (isError) {
+      toast.error("You must fill or select all field!");
+    }
+  }, [isError]);
 
   return (
     <Modal

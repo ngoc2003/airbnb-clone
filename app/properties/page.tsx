@@ -1,7 +1,6 @@
 import React from "react";
 import getCurrentUser from "../actions/getCurrentUser";
 import EmptyState from "../components/EmptyState";
-import getListingList from "../actions/getListingList";
 import PropertiesClient from "./PropertiesClient";
 import Client from "../components/client/Client";
 
@@ -16,10 +15,7 @@ const PropertiesPage = async () => {
 
   return (
     <Client>
-      <PropertiesClient
-        params={params}
-        currentUser={currentUser}
-      />
+      <PropertiesClient params={params} currentUser={currentUser} />
     </Client>
   );
 };
