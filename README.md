@@ -1,120 +1,177 @@
-# AIRBNB - CLONE
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
 
----
+<!-- ABOUT THE PROJECT -->
 
-## Quick Links
+## About The Project
 
-[Demo](#demo)
+[![Airbnb][product-screenshot]](https://demo-airbnb-clone.vercel.app/)
 
-- [Live Site Demo](#live-site-demo)
-<!-- - [Video Demo](#video-demo) -->
+This website is inspired by [Airbnb](https://www.airbnb.com.vn/) and has been created solely for educational purposes. I hope you find something valuable to study in my project ❤️. If you have any questions or need assistance, please feel free to ask. Good luck with your learning journey!
 
-[Tech Stack](#tech-stack)
+### Built With
 
-[Implementation Hightlights](#implementation-highlights)
+[![Next][Next.js]][Next-url]
+[![Tailwindcss][Tailwindcss]][Tailwindcss-url]
+[![Typescript][Typescript.js]][Typescript-url]
+[![MongoDB][MongoDB]][MongoDB-url]
+[![Docker][Docker]][Docker-url]
+[![Vercel][Vercel]][Vercel-url]
+[![Prisma][Prisma]][Prisma-url]
 
-- [User Stories](#user-stories)
-- [Current Plans for Expansion](#current-plans-for-expansion)
-- [Future Plans for Expansion](#future-plans-for-expansion)
-
-[Getting Started](#getting-started)
-
-- [Prerequisites](#prerequisites)
-
-  - [Tools & Versions](#tools-&-versions)
-
-- [Serving Application](#serving-application)
-
-  - [Web Client](#web-client)
-
-[Deployment](#deployment)
-
-[Author](#author)
-
----
-
-## Demo
-
-### Live Site Demo
-
-Demo: [Link](https://chat-via-web.vercel.app/)
-
----
-
-## Tech Stack
-
-- NextJS - Prisma - TailwindCSS - Typescript
-
-- MongoDB - Next Auth
-
----
-
-## Implementation Highlights
-
-- `Front-end Technologies`: React, TypeScript, and Next.js were used to develop the web client, ensuring a robust and efficient user interface.
-- `State Management`: Zustand
-- `Database`: MongoDB was used as the persisted database, providing a secure and reliable storage solution for managing user data.
-- `Commit Conventions`: Commitlint and Husky were utilized to enforce commit message conventions and pre-commit hooks, promoting code quality and maintainability.
-- `Code Analysis`: SonarCloud was integrated for static code analysis and code quality checks, allowing continuous monitoring and improvement of code quality. It helps identify code smells, bugs, vulnerabilities, and maintain a high level of code quality.
-- `Documentation`: The codebase was documented with clear and concise comments, enhancing code readability and facilitating future maintenance and updates.
-
----
-
-## User Stories
-
-- Update later
-
----
-
-### Current Plans for Expansion
-
-- Containerize services and database with Docker
-
-### Future Plans for Expansion
-
-- Docker
-- Pagination
-- Voting system
-- Apply next i18n
-- Upload multiple images
-- Intergrate rich text editor
-
----
+<!-- GETTING STARTED -->
 
 ## Getting Started
 
+Running follow these simple example steps below
+
 ### Prerequisites
 
-**!important** .env file is required for setting up environment variables for this project  
- an example of .env file is located at root directory
+- yarn
+
+```sh
+  npm i yarn -g
+```
+
+### Installation
+
+1. Clone the repo
+
+```sh
+  git clone https://github.com/ngoc2003/airbnb-clone.git
+```
+
+2. Create `.env` file in main path
+3. Copy your env values like `.env.example` file
+4. Install packages
+
+```sh
+  yarn install
+```
+
+5. Set up prisma
+
+```sh
+  npx prisma db push
+```
+
+6. Run project
+
+```sh
+  yarn dev
+```
+
+7. Open website in [http://localhost:3000/](http://localhost:3000/)
+
+<!-- USAGE EXAMPLES -->
+
+## Note
+
+If you add a new schema to the database or modifiy any fields in database, you must run this code below before rerunning the project.
+
+```sh
+  npx prisma db push
+```
+
+<!-- ROADMAP -->
+
+## Roadmap
+
+- [ ] Multi-language Support
+  - [ ] English
+  - [ ] Vietnamese
+  - [ ] Japanese
+- [x] Rich text editor
+- [x] Infinity scroll page
+
+<!-- FEATURES-->
+
+## Features
+
+- Tailwind design, animations and effects
+- Responsive for all devices
+- Credential authentication
+- Google authentication
+- Github authentication
+- Image upload using Cloudinary CDN
+- Client form validation and handling using react-hook-form
+- Server error handling using react-toast
+- Calendars with react-date-range
+- Page loading state
+- Page empty state
+- Booking / Reservation system
+- Guest reservation cancellation
+- Owner reservation cancellation
+- Creation and deletion of properties
+- Pricing calculation
+- Advanced search by category, date range, map location, number of guests, rooms and bathrooms
+- Favorites system
+- Shareable URL filters by categories
+- Review system
+- Rich text editor
+- Infinity scroll data
+
+<!-- Tools & Versions -->
 
 #### Tools & Versions
 
-| Tools  | Versions |
-| ------ | -------- |
-| yarn   | 1.22.19  |
+| Tools | Versions |
+| ----- | -------- |
+| yarn  | 1.22.19  |
 
-#### Web Client
+<!-- Tools & Versions -->
 
-- install dependencies & start application
+#### Packages
 
-```terminal
-yarn install
-yarn dev
-```
+See full packages at [Package.json](/package.json)
 
-Application will be serving on http://localhost:3000
+<!-- CONTRIBUTING -->
 
----
+## Contributing
 
-## Deployment
+If you have a suggestion that would make this better, please fork the repo and create a pull request.
+Don't forget to give the project a star! Thanks again!
 
-- Not setup yet
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
----
+<!-- LICENSE -->
 
-## Author
+## License
 
-- [Bui Ngoc](https://www.facebook.com/Bui.Ngoc.1302/)
+Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
----
+<!-- CONTACT -->
+
+## Contact
+
+Bui Ngoc - [Facebook](https://www.facebook.com/Bui.Ngoc.1302/)
+
+[contributors-shield]: https://img.shields.io/github/contributors/ngoc2003/airbnb-clone.svg?style=for-the-badge
+[contributors-url]: https://github.com/ngoc2003/airbnb-clone/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/ngoc2003/airbnb-clone.svg?style=for-the-badge
+[forks-url]: https://github.com/ngoc2003/airbnb-clone/network/members
+[stars-shield]: https://img.shields.io/github/stars/ngoc2003/airbnb-clone.svg?style=for-the-badge
+[stars-url]: https://github.com/ngoc2003/airbnb-clone/stargazers
+[issues-shield]: https://img.shields.io/github/issues/ngoc2003/airbnb-clone.svg?style=for-the-badge
+[issues-url]: https://github.com/ngoc2003/airbnb-clone/issues
+[product-screenshot]: public/images/demo.png
+[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
+[Next-url]: https://nextjs.org/
+[Typescript.js]: https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white
+[Typescript-url]: https://www.typescriptlang.org/
+[Tailwindcss]: https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white
+[Tailwindcss-url]: https://tailwindcss.com/
+[MongoDB]: https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white
+[MongoDB-url]: https://cloud.mongodb.com/
+[Vercel]: https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white
+[Vercel-url]: https://vercel.com/
+[Prisma]: https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white
+[Prisma-url]: https://www.prisma.io/
+[Docker]: https://img.shields.io/badge/Docker-3982CE?style=for-the-badge&logo=Docker&logoColor=white
+[Docker-url]: https://www.prisma.io/
